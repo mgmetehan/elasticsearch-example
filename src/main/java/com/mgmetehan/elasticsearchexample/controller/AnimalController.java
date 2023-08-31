@@ -1,6 +1,7 @@
 package com.mgmetehan.elasticsearchexample.controller;
 
 import com.mgmetehan.elasticsearchexample.document.Animal;
+import com.mgmetehan.elasticsearchexample.document.Order;
 import com.mgmetehan.elasticsearchexample.dto.SearchRequestDto;
 import com.mgmetehan.elasticsearchexample.service.AnimalService;
 import lombok.RequiredArgsConstructor;
@@ -20,19 +21,15 @@ public class AnimalController {
 
     private final AnimalService animalService;
 
-    @PostMapping
-    public Animal indexAnimal(@RequestBody Animal animal) {
-        return animalService.indexAnimal(animal);
-    }
-
-    @GetMapping("/{id}")
-    public Animal findAnimalById(@PathVariable Long id) {
-        return animalService.findAnimalById(id);
-    }
 
     @GetMapping("/search")
     public List<Animal> searchAnimals(@RequestBody SearchRequestDto dto) {
         return animalService.searchAnimals(dto);
+    }
+
+    @GetMapping()
+    public Iterable<Order> find() {
+        return animalService.findAll();
     }
 
 }

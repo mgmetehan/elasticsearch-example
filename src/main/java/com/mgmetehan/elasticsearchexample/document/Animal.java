@@ -16,7 +16,7 @@ import org.springframework.data.elasticsearch.annotations.Setting;
 @Getter
 @Setter
 @Builder
-@Document(indexName = "animal_index")
+@Document(indexName = "animal_index",createIndex = true)
 @Setting(settingPath = "static/es-settings.json")
 public class Animal {
     @Id
