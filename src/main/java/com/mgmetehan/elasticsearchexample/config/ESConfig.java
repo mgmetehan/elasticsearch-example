@@ -2,7 +2,6 @@ package com.mgmetehan.elasticsearchexample.config;
 
 import org.apache.http.HttpHost;
 import org.elasticsearch.client.RestClient;
-import org.elasticsearch.client.RestHighLevelClient;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -19,14 +18,6 @@ public class ESConfig {
     @Value("${elasticsearch.url}")
     private String elasticsearchUrl;
 
-    @Bean
-    public RestHighLevelClient setElasticSearchClient() {
 
-        return new RestHighLevelClient(
-                RestClient.builder(
-                        new HttpHost("localhost", 9200, "http"),
-                        new HttpHost("localhost", 9300, "http")
-                ));
-    }
 
 }

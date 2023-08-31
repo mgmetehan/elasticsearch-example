@@ -20,9 +20,11 @@ import org.springframework.data.elasticsearch.annotations.Setting;
 @Setting(settingPath = "static/es-settings.json")
 public class Animal {
     @Id
-    private Long id;
+    private String id;
     @Field(name = "name", type = FieldType.Text)
     private String name;
+    @Field(name = "lastname", type = FieldType.Text)
+    private String lastname;
     @Field(name = "age", type = FieldType.Integer)
     private Integer age;
 }

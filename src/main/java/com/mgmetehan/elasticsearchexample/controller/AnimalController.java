@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Collections;
 import java.util.List;
 
 @RestController
@@ -31,8 +32,12 @@ public class AnimalController {
     }
 
     @GetMapping("/search")
-    public List<Animal> searchAnimals(@RequestBody SearchRequestDto dto) {
-        return animalService.searchAnimals(dto);
+    public List<Animal> searchAnimals(@RequestBody SearchRequestDto searchRequest) {
+        try {
+            return animalService.searchAnimals(searchRequest);
+        } catch (Exception e) {
+            // Hata yönetimi burada yapılabilir
+            return Collections.emptyList();
+        }
     }
-
 }
