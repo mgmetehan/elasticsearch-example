@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -43,5 +44,13 @@ public class AnimalService {
             // Hata yönetimi burada yapılabilir
             return Collections.emptyList();
         }
+    }
+
+
+    public List<String> getAutocompleteSuggestions(String input) {
+        List<Animal> animals = animalRepository.customAutocompleteSearch(input);
+        return animals.stream()
+                .map(Animal::getName)
+                .collect(Collectors.toList());
     }
 }

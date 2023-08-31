@@ -12,4 +12,7 @@ public interface AnimalRepository extends ElasticsearchRepository<Animal, String
 
     @Query("{\"bool\": {\"should\": [{\"match\": {\"name\": \"?0\"}}, {\"match\": {\"lastname\": \"?0\"}}]}}")
     List<Animal> searchNameAndLastName(String searchTerm);
+
+    @Query("{\"bool\": {\"must\": {\"match_phrase_prefix\": {\"name\": \"?0\"}}}}")
+    List<Animal> customAutocompleteSearch(String input);
 }

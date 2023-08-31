@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.elasticsearch.annotations.CompletionField;
 import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldType;
@@ -21,7 +22,7 @@ import org.springframework.data.elasticsearch.annotations.Setting;
 public class Animal {
     @Id
     private String id;
-    @Field(name = "name", type = FieldType.Text)
+    @Field(type = FieldType.Search_As_You_Type)
     private String name;
     @Field(name = "lastname", type = FieldType.Text)
     private String lastname;
