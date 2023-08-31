@@ -6,14 +6,18 @@ import com.mgmetehan.elasticsearchexample.dto.SearchRequestDto;
 import com.mgmetehan.elasticsearchexample.repository.AnimalRepository;
 import com.mgmetehan.elasticsearchexample.util.SearchUtil;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.search.SearchHit;
+import org.elasticsearch.xcontent.XContentType;
 import org.springframework.stereotype.Service;
+import org.elasticsearch.action.index.IndexRequest;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -25,10 +29,25 @@ public class AnimalService {
 
     private final RestHighLevelClient client;
     private final AnimalRepository animalRepository;
-    private final ObjectMapper MAPPER = new ObjectMapper();
+    private final ObjectMapper mapper;
 
     public Animal indexAnimal(Animal animal) {
+        createIndex("animal_index",animal.getId(), animal);
         return animalRepository.save(animal);
+    }
+
+    public <T> void createIndex(String indexName, Long id, T source) {
+        try {
+            String json = mapper.writeValueAsString(source);
+
+            IndexRequest indexRequest = new IndexRequest(indexName);
+            indexRequest.id(String.valueOf(id));
+            indexRequest.source(json, XContentType.JSON);
+
+            client.index(indexRequest, RequestOptions.DEFAULT);
+        }catch (IOException e) {
+            log.error("Index olusturulurken hata olustu", e);
+        }
     }
 
     public Animal findAnimalById(Long id) {
@@ -82,7 +101,7 @@ public class AnimalService {
 
             // Her arama vurusundan bir hayvan cikartiliyor ve listeye ekleniyor
             for (SearchHit hit : searchHits) {
-                Animal animal = MAPPER.readValue(hit.getSourceAsString(), Animal.class);
+                Animal animal = mapper.readValue(hit.getSourceAsString(), Animal.class);
                 animals.add(animal);
             }
             return animals;
