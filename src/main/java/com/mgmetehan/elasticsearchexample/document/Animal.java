@@ -1,5 +1,6 @@
 package com.mgmetehan.elasticsearchexample.document;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -19,10 +20,11 @@ import org.springframework.data.elasticsearch.annotations.Setting;
 @Builder
 @Document(indexName = "animal_index")
 @Setting(settingPath = "static/es-settings.json")
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Animal {
     @Id
     private String id;
-    @Field(type = FieldType.Search_As_You_Type)
+    @Field(type = FieldType.Text)
     private String name;
     @Field(name = "lastname", type = FieldType.Text)
     private String lastname;
