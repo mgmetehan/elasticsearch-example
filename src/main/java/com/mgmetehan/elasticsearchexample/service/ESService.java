@@ -6,6 +6,7 @@ import co.elastic.clients.elasticsearch.core.SearchResponse;
 import com.mgmetehan.elasticsearchexample.document.Animal;
 import com.mgmetehan.elasticsearchexample.util.SearchUtil;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -14,6 +15,7 @@ import java.util.function.Supplier;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class ESService {
     private final ElasticsearchClient elasticsearchClient;
 
@@ -22,7 +24,7 @@ public class ESService {
         Supplier<Query> supplier = SearchUtil.createSupplierAutoSuggest(animalName);
         SearchResponse<Animal> searchResponse = elasticsearchClient
                 .search(s -> s.index("animal_index").query(supplier.get()), Animal.class);
-        System.out.println(" elasticsearch auto suggestion query" + supplier.get().toString());
+        log.info(" elasticsearch auto suggestion query" + supplier.get().toString());
         return searchResponse;
     }
 }
